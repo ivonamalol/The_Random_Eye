@@ -1,7 +1,10 @@
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BlinkInput : MonoBehaviour
 {
+    public static int blinkValue = 0; // 1 for single blink, 0 for double blink
     private float lastTapTime = 0f;
     private const float doubleTapThreshold = 0.3f; // Max time between taps for double tap
     private bool isWaitingForSecondTap = false;
@@ -23,16 +26,17 @@ public class BlinkInput : MonoBehaviour
                 // Check if this tap is within double tap threshold
                 if (currentTime - lastTapTime <= doubleTapThreshold)
                 {
-                    Debug.Log("double blink");
+                    // Double blink detected: interpret as 0
+                    HandleBlink(0);
                     isWaitingForSecondTap = false;
                     tapCount++;
                 }
                 else
                 {
                     // Too late for double tap, treat previous as single and start new
-                    Debug.Log("blink");
+                    HandleBlink(1); // Previous tap was a single blink
                     lastTapTime = currentTime;
-                    // Wait again for possible double tap
+                    isWaitingForSecondTap = true;
                 }
             }
             else
@@ -40,7 +44,6 @@ public class BlinkInput : MonoBehaviour
                 // First tap
                 lastTapTime = currentTime;
                 isWaitingForSecondTap = true;
-                // Start waiting for second tap
             }
         }
 
@@ -50,7 +53,7 @@ public class BlinkInput : MonoBehaviour
             if (Time.time - lastTapTime > doubleTapThreshold)
             {
                 // Timeout, it's a single blink
-                Debug.Log("blink");
+                HandleBlink(1);
                 isWaitingForSecondTap = false;
                 tapCount++;
             }
@@ -62,10 +65,41 @@ public class BlinkInput : MonoBehaviour
         {
             if (tapCount > 5) // arbitrary limit for spam
             {
-                Debug.Log("Too many blinks! (spamming)");
+                HandleSpam(); // Custom action for spamming
             }
             spamTimer = 0f;
             tapCount = 0;
         }
     }
+
+    private static void HandleBlink(int value)
+    {
+        // value: 1 for single blink, 0 for double blink
+        Debug.Log($"Blink interpreted as: {value}");
+
+        if (value == 1)
+        {
+            // Handle single blink logic here
+            Debug.Log("Single blink detected!");
+            blinkValue = 1; // Set blinkValue to 1 for single blink
+        }
+        else if (value == 0)
+        {
+            // Handle double blink logic here
+            Debug.Log("Double blink detected!");
+            blinkValue = 0; // Set blinkValue to 0 for double blink
+
+        }
+        // TODO: Add your logic here for handling 1 or 0
+
+    }
+
+    private void HandleSpam()
+    {
+        Debug.Log("Custom spam action triggered!");
+        // TODO: Add your custom spam action here
+    }
+    
+
+
 }
