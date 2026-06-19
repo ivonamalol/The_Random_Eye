@@ -31,8 +31,8 @@ AnimatorController:
   m_Name: Character1
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isWalking
-    m_Type: 4
+  - m_Name: speed
+    m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -168,7 +168,13 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: speed
+    m_EventTreshold: 0.5
+  - m_ConditionMode: 4
+    m_ConditionEvent: speed
+    m_EventTreshold: -0.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102217085758371294}
   m_Solo: 0
@@ -215,7 +221,13 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 4
+    m_ConditionEvent: speed
+    m_EventTreshold: 0.5
+  - m_ConditionMode: 3
+    m_ConditionEvent: speed
+    m_EventTreshold: -0.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102509956400908152}
   m_Solo: 0
